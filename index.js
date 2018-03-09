@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
+const cheerio = require('cheerio')
 
-const url="http://www.imdb.com/title/tt7388562/";
+const url="http://www.imdb.com/find?q=star%20wars&s=tt&ref_=fn_al_tt_mr";
 
 function searchMovies(searchTerm){
     return fetch(`${url}${searchTerm}`)
@@ -8,7 +9,19 @@ function searchMovies(searchTerm){
 }
 
 
-searchMovies('Paul, Apostle of Christ')
+searchMovies('Star wars')
     .then(body => {
-        console.log(body)
+        const movies = [];
+        const $ = cheerio.load(body);
+        $('.findResult').each(function(i, element){
+            const $element = $(element);
+            const $image = $element.find('td a img')
+            const $title = $element.find('td.result_text a');
+            const movie = {
+                image: $image.attr('src'),
+                title: $title.text()
+            };
+            movies.push(movie)
+        });
+        console.log(movies)
     });
