@@ -4,6 +4,8 @@
   "description": "pull out the movie title, images, year etc and turn those in to json object by making api request to imdb",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
