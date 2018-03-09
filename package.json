@@ -1,0 +1,20 @@
+{
+  "name": "WebScrapper",
+  "version": "1.0.0",
+  "description": "pull out the movie title, images, year etc and turn those in to json object by making api request to imdb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sambryo/WebScrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sambryo/WebScrapper/issues"
+  },
+  "homepage": "https://github.com/sambryo/WebScrapper#readme"
+}
