@@ -16,6 +16,15 @@ app.get('/search/:title', (req, res) => {
     })
 });
 
+
+app.get('/movie/:imdbID', (req, res) => {
+    scraper
+    .searchMovies(req.params.imdbID)
+    .then(movies => {
+        res.json(movies)
+    })
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Listening on ${port}`);

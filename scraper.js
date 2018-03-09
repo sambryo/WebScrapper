@@ -3,10 +3,11 @@ const cheerio = require('cheerio')
 
 
 
-const url="http://www.imdb.com/find?q=star%20wars&s=tt&ref_=fn_al_tt_mr";
+const searchUrl="http://www.imdb.com/find?q=star%20wars&s=tt&ref_=fn_al_tt_mr";
+const movieUrl = 'https://www.imdb.com/title/';
 
 function searchMovies(searchTerm){
-    return fetch(`${url}${searchTerm}`)
+    return fetch(`${searchUrl}${searchTerm}`)
     .then(response => response.text())
     .then(body => {
         const movies = [];
@@ -15,20 +16,38 @@ function searchMovies(searchTerm){
             const $element = $(element);
             const $image = $element.find('td a img')
             const $title = $element.find('td.result_text a');
+
+            const imdbID= $title.attr('href').match(/title\/(.*)\//)[1]; // reg ex match for imdb id
             const movie = {
                 image: $image.attr('src'),
-                title: $title.text()
+                title: $title.text(),
+                imdbID
             };
             movies.push(movie)
         });
             return movies
     });
 }
+function getMovie(imdbID){
+    return fetch (`${movieUrl}${imdbID}`)
+        .then(response => response.text())
+        .then(body => {
+            const $ = cheerio.load(body);
+            const $title = $('.title_wrapper h1');
 
+            const title = $title.first().contents().filter(function(){
+                return this.type === 'text';
+            }).text().trim();
 
-searchMovies('Star wars')
-
+            const rating = $('meta[itemProp="contentRating"]').attr('contents')
+            return {
+                title,
+                rating
+            };
+        })
+}
 
 module.exports = {
-    searchMovies
+    searchMovies,
+    getMovie
 };
